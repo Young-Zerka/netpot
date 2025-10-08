@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Netpot - Code Explanation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>Netpot</header>
+<nav>
+<a href="index.html">Home</a>
+<a href="explanation.html">Code Explanation</a>
+<a href="download.html">Download</a>
+<a href="about.html">About</a>
+</nav>
+<main>
+<h1>Code Explanation</h1>
+<p>The Netpot batch script is structured as a command-line menu system:</p>
+<ul>
+<li>Requests administrative privileges for registry and network commands.</li>
+<li>Changes CMD font to Consolas for better readability.</li>
+<li>Main menu options:
+  <ul>
+    <li>IP information (ipconfig)</li>
+    <li>Network status (netstat)</li>
+    <li>Wi-Fi info and management (netsh)</li>
+    <li>Network configuration (ARP, hostname, systeminfo)</li>
+    <li>Connections and sharing (net use, net view, net share)</li>
+    <li>Extras: ping, tracert, pathping, nslookup</li>
+    <li>Help and exit</li>
+  </ul>
+</li>
+<li>Submenus allow running specific commands and display a “Finished” message in green after completion.</li>
+<li>Includes Wi-Fi detection and appropriate handling if Wi-Fi is not supported.</li>
+</ul>
+<pre>
+@echo off
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Requesting administrative privileges...
+    powershell -Command "Start-Process '%~f0' -Verb RunAs"
+    exit
+)
+chcp 65001 >nul
+chcp 437 >nul
+reg add "HKCU\Console" /v FaceName /t REG_SZ /d "Consolas" /f
+reg add "HKCU\Console" /v FontFamily /t REG_DWORD /d 0x36 /f
+reg add "HKCU\Console" /v FontSize /t REG_DWORD /d 0x00120000 /f
+...
+</pre>
+</main>
+<footer>&copy; 2025 Noctua</footer>
+</body>
+</html>
