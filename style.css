@@ -67,3 +67,15 @@ a {
 a:hover {
     border-bottom: 1px solid #43a543;
 }
+
+button {
+    color: #aac7a7;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-family: 'Inter';
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    font-size: 2rem;
+}
