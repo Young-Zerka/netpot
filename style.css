@@ -79,3 +79,9 @@ button {
     padding: 0;
     font-size: 2rem;
 }
+
+img {
+    display: block;
+    padding: 1rem 0;
+    width: 51%;
+}
