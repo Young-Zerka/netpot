@@ -1,5 +1,5 @@
 $batUrl = 'https://young-zerka.github.io/netpot/netpot.bat'
-$tempPath = "$env:TEMP\netpot.bat"
-Invoke-WebRequest -Uri $batUrl -OutFile $tempPath -UseBasicParsing
-Start-Process -FilePath $tempPath -Wait
-Remove-Item -Path $tempPath -Force
+$tmp = Join-Path $env:TEMP 'netpot.bat'
+Invoke-WebRequest -Uri $batUrl -OutFile $tmp -UseBasicParsing
+Start-Process -FilePath $tmp -Wait
+Remove-Item -Path $tmp -Force
