@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Netpot</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Netpot</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="netpot.png">
 </head>
+
 <body>
-<header>Netpot</header>
-<nav>
-<a href="index.html">Home</a>
-<a href="explanation.html">Code Explanation</a>
-<a href="download.html">Download</a>
-<a href="about.html">About</a>
-</nav>
-<main>
-<h1>Welcome to Netpot</h1>
-<p>Netpot is a network utility batch tool that allows you to view, manage, and troubleshoot network configurations, Wi-Fi settings, and connections directly from the Windows command line.</p>
-<p>Use the navigation above to explore the code explanation, download the tool, or learn more about it.</p>
+  <header>Netpot</header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="explanation.html">Code Explanation</a>
+    <a href="download.html">Download</a>
+    <a href="about.html">About</a>
+  </nav>
+  <main>
+    <div class="space">
+      <img src="netpot.png" alt="Netpot Logo" class="logo" />
+      <div class="text">
+        <p>Netpot</p>
+        <p class="slogan">Lets make life easier</p>
+      </div>
+    </div>
+    <h1>Welcome to Netpot</h1>
+    <p>Netpot is a network utility batch tool that allows you to view, manage, and troubleshoot network configurations,
+      Wi-Fi settings, and connections directly from the Windows command line.</p>
+    <p>Use the navigation above to explore the code explanation, download the tool, or learn more about it.</p>
 
-<h1>How to use?</h1>
-<p>1. Open Powershell</p>
-<p>2. Type "irm get.networkguru.com | iex" and press enter</p>
-<input type="text" value="irm get.networkguru.com | iex" id="myInput"hidden>
-<button onclick="myFunction()">Copy to clipboard</button>
-<img src="image.png" />
-<script>
-function myFunction() {
-  var copyText = document.getElementById("myInput");
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); 
-  navigator.clipboard.writeText(copyText.value);
-}
-</script>
-</main>
-<footer>&copy; 2025 Noctua</footer>
+    <h1>How to use?</h1>
+    <p>1. Open Powershell</p>
+    <p>2. Type "irm 'https://raw.githubusercontent.com/Young-Zerka/netpot/refs/heads/main/execpt.ps1' | iex" and press
+      enter</p>
+    <input type="text"
+      value="irm 'https://raw.githubusercontent.com/Young-Zerka/netpot/refs/heads/main/execpt.ps1' | iex" id="myInput"
+      hidden>
+    <button onclick="myFunction()">Copy to clipboard</button>
+    <img src="image.png" />
+    <script>
+      function myFunction() {
+        var copyText = document.getElementById("myInput");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+      }
+    </script>
+  </main>
+  <footer>&copy; 2025 Noctua</footer>
 </body>
+
 </html>
-
-
-
