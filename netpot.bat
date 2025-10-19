@@ -1,17 +1,49 @@
 @echo off
+cd /d "%~dp0"
+
 net session >nul 2>&1
 if %errorlevel% neq 0 (
     echo Requesting administrative privileges...
-    powershell -Command "Start-Process '%~f0' -Verb RunAs"
+    powershell -Command "Start-Process cmd -ArgumentList '/c cd /d %~dp0 && %~nx0' -Verb RunAs"
+    timeout /t 1 /nobreak >nul
     exit
 )
+
+setlocal enabledelayedexpansion
+setlocal ENABLEDELAYEDEXPANSION
+chcp 65001 >nul
+chcp 437 >nul
+
 chcp 65001 >nul
 chcp 437 >nul
 reg add "HKCU\Console" /v FaceName /t REG_SZ /d "Consolas" /f >nul
 reg add "HKCU\Console" /v FontFamily /t REG_DWORD /d 0x36 /f >nul
 reg add "HKCU\Console" /v FontSize /t REG_DWORD /d 0x00120000 /f >nul
-setlocal enabledelayedexpansion
 title Netpot
+goto main
+
+:exitScript
+cls
+color 07
+echo.
+echo                Thank you for using Netpot!
+echo                Closing...
+timeout /t 2 /nobreak >nul
+exit /b
+
+:SetScrollableWindow
+mode con: cols=125 lines=50
+powershell -command "&{$h=get-host;$w=$h.ui.rawui;$s=$w.buffersize;$s.height=5000;$w.buffersize=$s;}"
+exit /b
+
+:RunCommand
+call :SetScrollableWindow
+%*
+echo.
+powershell -NoProfile -Command "Write-Host 'Command completed.' -ForegroundColor Green"
+pause >nul
+goto %return_menu%
+
 :main
 mode con: cols=76 lines=25
 cls
@@ -47,13 +79,9 @@ goto main
 
 :check_wifi
 sc query wlansvc | find "RUNNING" >nul
-if not %errorlevel%==0 (
-    goto no_wifi
-)
+if not %errorlevel%==0 goto no_wifi
 netsh wlan show drivers | find "Wireless" >nul
-if not %errorlevel%==0 (
-    goto no_wifi
-)
+if not %errorlevel%==0 goto no_wifi
 goto netsh_menu
 
 :no_wifi
@@ -87,53 +115,13 @@ echo                [0] Exit
 echo            __________________________________________________________
 echo.
 set /p subchoice=[32m           Enter a menu option in the keyboard [1, 2, 3, 4, 5, 6, 0]: [0m
-if "%subchoice%"=="2" (
-    mode con: cols=125 lines=25
-    cls
-    ipconfig /all
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto ipconfig_menu
-)
-if "%subchoice%"=="3" (
-    mode con: cols=125 lines=25
-    cls
-    ipconfig /release
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto ipconfig_menu
-)
-if "%subchoice%"=="4" (
-    mode con: cols=125 lines=25
-    cls
-    ipconfig /renew
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto ipconfig_menu
-)
-if "%subchoice%"=="5" (
-    mode con: cols=125 lines=25
-    cls
-    ipconfig /flushdns
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto ipconfig_menu
-)
-if "%subchoice%"=="6" (
-    mode con: cols=125 lines=25
-    cls
-    ipconfig /displaydns
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto ipconfig_menu
-)
+if "%subchoice%"=="2" set "return_menu=ipconfig_menu" & call :RunCommand ipconfig /all
+if "%subchoice%"=="3" set "return_menu=ipconfig_menu" & call :RunCommand ipconfig /release
+if "%subchoice%"=="4" set "return_menu=ipconfig_menu" & call :RunCommand ipconfig /renew
+if "%subchoice%"=="5" cls & ipconfig /flushdns & powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green" & pause>nul & goto ipconfig_menu
+if "%subchoice%"=="6" cls & ipconfig /displaydns & powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green" & pause>nul & goto ipconfig_menu
 if "%subchoice%"=="1" goto main
-if "%subchoice%"=="0" exit
+if "%subchoice%"=="0" goto exitScript
 goto ipconfig_menu
 
 :netstat_menu
@@ -155,53 +143,13 @@ echo                [0] Exit
 echo            ___________________________________________________________
 echo.
 set /p subchoice=[32m           Enter a menu option in the keyboard [1, 2, 3, 4, 5, 6, 0]: [0m
-if "%subchoice%"=="2" (
-    mode con: cols=125 lines=25
-    cls
-    netstat
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto netstat_menu
-)
-if "%subchoice%"=="3" (
-    mode con: cols=125 lines=25
-    cls
-    netstat -ano
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto netstat_menu
-)
-if "%subchoice%"=="4" (
-    mode con: cols=125 lines=25
-    cls
-    netstat -b
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto netstat_menu
-)
-if "%subchoice%"=="5" (
-    mode con: cols=125 lines=25
-    cls
-    netstat -r
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto netstat_menu
-)
-if "%subchoice%"=="6" (
-    mode con: cols=125 lines=25
-    cls
-    netstat -e
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green"
-    pause >nul
-    goto netstat_menu
-)
+if "%subchoice%"=="2" cls & netstat & powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green" & pause>nul & goto netstat_menu
+if "%subchoice%"=="3" cls & netstat -ano & powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green" & pause>nul & goto netstat_menu
+if "%subchoice%"=="4" cls & netstat -b & powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green" & pause>nul & goto netstat_menu
+if "%subchoice%"=="5" cls & netstat -r & powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green" & pause>nul & goto netstat_menu
+if "%subchoice%"=="6" cls & netstat -e & powershell -NoProfile -Command "Write-Host 'Finished.' -ForegroundColor Green" & pause>nul & goto netstat_menu
 if "%subchoice%"=="1" goto main
-if "%subchoice%"=="0" exit
+if "%subchoice%"=="0" goto exitScript
 goto netstat_menu
 
 :netsh_menu
@@ -225,15 +173,10 @@ echo            ________________________________________________________________
 echo.
 set /p subchoice=[32m           Enter a menu option in the keyboard [1, 2, 3, 4, 5, 6, 0]: [0m
 if "%subchoice%"=="2" (
-    mode con: cols=125 lines=25
-    cls
+    set "return_menu=netsh_menu"
     echo Scanning for wireless networks...
     echo.
-    netsh wlan show networks mode=bssid
-    echo.
-    powershell -NoProfile -Command "Write-Host 'Scan complete! Above are all available networks.' -ForegroundColor Green"
-    pause >nul
-    goto netsh_menu
+    call :RunCommand netsh wlan show networks mode=bssid
 )
 if "%subchoice%"=="3" (
     mode con: cols=125 lines=25
@@ -246,7 +189,9 @@ if "%subchoice%"=="3" (
     pause >nul
     goto netsh_menu
 )
+
 if "%subchoice%"=="4" (
+    call :SetScrollableWindow
     mode con: cols=125 lines=25
     cls
     echo Available profiles:
@@ -254,14 +199,16 @@ if "%subchoice%"=="4" (
     echo.
     set /p "profile=Enter the exact profile name: "
     cls
-    echo Getting password for profile: %profile%
+    echo Getting password for profile: !profile!
     echo.
-    netsh wlan show profile name="%profile%" key=clear
+    netsh wlan show profile name="!profile!" key=clear
+    call :SetScrollableWindow
     echo.
     powershell -NoProfile -Command "Write-Host 'Password info shown above (if available).' -ForegroundColor Green"
     pause >nul
-    goto netsh_menu
+    endlocal & goto netsh_menu
 )
+
 if "%subchoice%"=="5" (
     mode con: cols=125 lines=25
     cls
@@ -314,7 +261,7 @@ if "%subchoice%"=="7" (
     goto netsh_menu
 )
 if "%subchoice%"=="1" goto main
-if "%subchoice%"=="0" exit
+if "%subchoice%"=="0" goto main
 goto netsh_menu
 
 :netconf_menu
@@ -412,7 +359,7 @@ if "%subchoice%"=="9" (
     goto netconf_menu
 )
 if "%subchoice%"=="1" goto main
-if "%subchoice%"=="0" exit
+if "%subchoice%"=="0" goto main
 goto netconf_menu
 
 :netconn_menu
@@ -460,7 +407,7 @@ if "%subchoice%"=="4" (
     goto netconn_menu
 )
 if "%subchoice%"=="1" goto main
-if "%subchoice%"=="0" exit
+if "%subchoice%"=="0" goto main
 goto netconn_menu
 
 :extras
@@ -531,7 +478,7 @@ if "%subchoice%"=="5" (
     goto extras
 )
 if "%subchoice%"=="1" goto main
-if "%subchoice%"=="0" exit
+if "%subchoice%"=="0" goto main
 goto extras
 
 :help
