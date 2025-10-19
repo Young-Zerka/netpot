@@ -17,20 +17,21 @@ header {
 }
 nav {
     background-color: #222;
-    padding: 10px;
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 nav a {
     color: #b1f1b1;
-    margin: 0 15px;
     text-decoration: none;
     border: none;
     transition: 0.2s;
+    padding: 10px;
 }
 
 nav a:hover {
     border: none;
-    opacity: 0.7;
+    background: #333;
 }
 
 main {
@@ -39,7 +40,7 @@ main {
     margin: auto;
 }
 h1, h2 {
-    color: #71836f;
+    color: #d5e5b5;;
     text-transform: uppercase;
     font-weight: 200;
 }
@@ -51,21 +52,23 @@ pre {
 footer {
     text-align: center;
     padding: 15px;
-    background-color: #333;
+    background-color: #333333e6;
     color: #888;
-    position: absolute;
     bottom: 0;
     width: 100%;
+    position: fixed;
+    border-top: 5px solid #6c905747;
+    backdrop-filter: blur(5px);
 }
 
 a {
     text-decoration: none;
-    color: #43a543;
+    color: #d5ffd5;
     border-bottom: 1px solid transparent;
 }
 
 a:hover {
-    border-bottom: 1px solid #43a543;
+    border-bottom: 1px solid #d5ffd5;
 }
 
 button {
@@ -84,4 +87,29 @@ img {
     display: block;
     padding: 1rem 0;
     width: 51%;
+}
+
+.space {
+    display: flex;
+    align-content: space-around;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.space>img {
+    width: 30%;
+}
+
+.text {
+    font-size: 49px;
+}
+
+.text>p {
+    color: #d5e5b5;
+    font-weight: 100;
+}
+
+p.slogan {
+    opacity: 0.2;
+    font-size: 43px;
 }
