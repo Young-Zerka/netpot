@@ -198,11 +198,11 @@ if "%subchoice%"=="4" (
     netsh wlan show profiles
     echo.
     set /p "profile=Enter the exact profile name: "
+    call :SetScrollableWindow
     cls
     echo Getting password for profile: !profile!
     echo.
     netsh wlan show profile name="!profile!" key=clear
-    call :SetScrollableWindow
     echo.
     powershell -NoProfile -Command "Write-Host 'Password info shown above (if available).' -ForegroundColor Green"
     pause >nul
